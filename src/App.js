@@ -10,6 +10,7 @@ import Category from "./pages/category";
 import Categories from "./pages/categories";
 import Cart from "./pages/cart";
 import FilterContextProvider from "./FilterContext";
+import ThemeButton from "./components/themeButton";
 
 function App() {
   useEffect(() => {
@@ -32,6 +33,7 @@ function App() {
           style={{ paddingTop: 80 }}
           className="flex align-center justify-center"
         >
+          <ThemeButton />
           <Routes>
             <Route path="/" exact element={<Home />} />
             <Route path="/cart" exact element={<Cart />} />

@@ -7,7 +7,7 @@ const Menu = (props) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-  const { filters, setFilters } = useContext(FilterContext);
+  const { filters, setFilters, setDefault } = useContext(FilterContext);
 
   const [min, setMin] = useState(30);
   const [max, setMax] = useState(100);
@@ -34,7 +34,13 @@ const Menu = (props) => {
       categories: [...categories],
       price: { min: min * 10, max: max * 10 },
     });
-    console.log(filters);
+  };
+
+  const handleClear = () => {
+    setCategories([]);
+    setMin(0);
+    setMax(1000);
+    setDefault();
   };
 
   useEffect(() => {
@@ -68,6 +74,7 @@ const Menu = (props) => {
                 id={index}
                 key={index}
                 onChange={handleCategory}
+                checked={categories.includes(el)}
               />
               <label className="form-check-label inline-block text-gray-800 dark:text-sky-400">
                 {el}
@@ -112,6 +119,12 @@ const Menu = (props) => {
         className="w-full bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
       >
         Apply filters
+      </button>
+      <button
+        onClick={handleClear}
+        className="mt-2 w-full bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded"
+      >
+        Reset filters
       </button>
     </div>
   );

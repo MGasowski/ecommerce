@@ -22,16 +22,18 @@ const Product = (props) => {
   if (loading) return <Spinner />;
   if (!data.title) return <Spinner />;
   return (
-    <div className="container border w-full  flex">
-      <div className="w-1/3 border">
-        {" "}
+    <div className="container  w-full  flex mt-5">
+      <div className="w-1/3 mr-4">
         <img alt="item" src={data.image} />
       </div>
       <div className="w-2/3">
-        <div className="flex flex-col">
-          <p className="text-4xl">{data.title}</p>
-          <p>{data.description}</p>
-          <div>
+        <div className="flex flex-col justify-around h-full">
+          <p className="text-6xl bold text-center  mb-6 text-teal-800">
+            {data.title}
+          </p>
+          <p className="text-justify p-3">{data.description}</p>
+          <div className="self-end">
+            <span>Rating: </span>
             <Rating rate={data.rating.rate} count={data.rating.count} />
           </div>
         </div>
