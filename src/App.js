@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Product from "./pages/product";
 import Category from "./pages/category";
 import Categories from "./pages/categories";
+import Cart from "./pages/cart";
 
 function App() {
   useEffect(() => {
@@ -32,6 +33,7 @@ function App() {
       >
         <Routes>
           <Route path="/" exact element={<Home />} />
+          <Route path="/cart" exact element={<Cart />} />
           <Route path="/products/:id" element={<Product />} />
           <Route path="/categories/:id" element={<Category />} />
           <Route path="categories" element={<Categories />} />

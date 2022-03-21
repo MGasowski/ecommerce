@@ -5,9 +5,26 @@ import Spinner from "./spinner";
 const Menu = (props) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
 
   const [min, setMin] = useState(30);
   const [max, setMax] = useState(100);
+
+  const handleMin = (e) => {
+    e.target.value >= max ? setMin(max) : setMin(e.target.value);
+  };
+
+  const handleMax = (e) => {
+    e.target.value <= min ? setMax(min) : setMax(e.target.value);
+  };
+
+  const handleCategory = (e) => {
+    const isSelected = categories.includes(e.target.value);
+
+    isSelected
+      ? setCategories(categories.filter((item) => item !== e.target.value))
+      : setCategories((current) => [...current, e.target.value]);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -39,6 +56,7 @@ const Menu = (props) => {
                 value={el}
                 id={index}
                 key={index}
+                onChange={handleCategory}
               />
               <label
                 class="form-check-label inline-block text-gray-800 dark:text-sky-400"
@@ -58,16 +76,13 @@ const Menu = (props) => {
             <label for="customRange1" class="form-label dark:text-sky-400">
               Min
             </label>
-            <span className="text-right dark:text-sky-400">
-              {" "}
-              {(1000 * min) / 100}
-            </span>
+            <span className="text-right dark:text-sky-400">{min * 10}</span>
           </div>
           <input
             type="range"
             id="customRange1"
             value={min}
-            onChange={(e) => setMin(e.target.value)}
+            onChange={handleMin}
             className="w-full"
           />
         </div>
@@ -76,22 +91,22 @@ const Menu = (props) => {
             <label for="customRange1" class="form-label dark:text-sky-400">
               Max
             </label>
-            <span className="text-right dark:text-sky-400">
-              {" "}
-              {(1000 * max) / 100}
-            </span>
+            <span className="text-right dark:text-sky-400"> {max * 10}</span>
           </div>
           <input
             type="range"
             id="customRange1"
             className="w-full"
             value={max}
-            onChange={(e) => setMax(e.target.value)}
+            onChange={handleMax}
           />
         </div>
       </div>{" "}
       <hr className="m-2 dark:border-slate-900" />
-      <button class="w-full bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+      <button
+        onClick={() => props.sort({ categories, min, max })}
+        class="w-full bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+      >
         Apply filters
       </button>
     </div>
