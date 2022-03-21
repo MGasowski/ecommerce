@@ -1,11 +1,13 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { FilterContext } from "../FilterContext";
 import Spinner from "./spinner";
 
 const Menu = (props) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
+  const { filters, setFilters } = useContext(FilterContext);
 
   const [min, setMin] = useState(30);
   const [max, setMax] = useState(100);
@@ -24,6 +26,15 @@ const Menu = (props) => {
     isSelected
       ? setCategories(categories.filter((item) => item !== e.target.value))
       : setCategories((current) => [...current, e.target.value]);
+  };
+
+  const handleApply = () => {
+    setFilters({
+      ...filters,
+      categories: [...categories],
+      price: { min: min * 10, max: max * 10 },
+    });
+    console.log(filters);
   };
 
   useEffect(() => {
@@ -47,21 +58,18 @@ const Menu = (props) => {
       <hr className="m-2 dark:border-slate-900" />
       <div>
         <p className="dark:text-gray-400">Categories:</p>
-        <div class="form-check">
+        <div className="form-check">
           {data.map((el, index) => (
             <div key={index}>
               <input
-                class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                 type="checkbox"
                 value={el}
                 id={index}
                 key={index}
                 onChange={handleCategory}
               />
-              <label
-                class="form-check-label inline-block text-gray-800 dark:text-sky-400"
-                for="flexCheckDefault"
-              >
+              <label className="form-check-label inline-block text-gray-800 dark:text-sky-400">
                 {el}
               </label>
             </div>
@@ -71,11 +79,9 @@ const Menu = (props) => {
       <hr className="m-2 dark:border-slate-900" />
       <div className="m-1 ">
         <p className="dark:text-gray-400">Price range:</p>
-        <div class="relative pt-1">
+        <div className="relative pt-1">
           <div className="w-full  flex justify-between">
-            <label for="customRange1" class="form-label dark:text-sky-400">
-              Min
-            </label>
+            <label className="form-label dark:text-sky-400">Min</label>
             <span className="text-right dark:text-sky-400">{min * 10}</span>
           </div>
           <input
@@ -86,11 +92,9 @@ const Menu = (props) => {
             className="w-full"
           />
         </div>
-        <div class="relative pt-1">
+        <div className="relative pt-1">
           <div className="w-full  flex justify-between">
-            <label for="customRange1" class="form-label dark:text-sky-400">
-              Max
-            </label>
+            <label className="form-label dark:text-sky-400">Max</label>
             <span className="text-right dark:text-sky-400"> {max * 10}</span>
           </div>
           <input
@@ -104,8 +108,8 @@ const Menu = (props) => {
       </div>{" "}
       <hr className="m-2 dark:border-slate-900" />
       <button
-        onClick={() => props.sort({ categories, min, max })}
-        class="w-full bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+        onClick={handleApply}
+        className="w-full bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
       >
         Apply filters
       </button>

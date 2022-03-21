@@ -9,6 +9,7 @@ import Product from "./pages/product";
 import Category from "./pages/category";
 import Categories from "./pages/categories";
 import Cart from "./pages/cart";
+import FilterContextProvider from "./FilterContext";
 
 function App() {
   useEffect(() => {
@@ -26,20 +27,21 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar />
-
-      <div
-        style={{ paddingTop: 80 }}
-        className="flex align-center justify-center"
-      >
-        <Routes>
-          <Route path="/" exact element={<Home />} />
-          <Route path="/cart" exact element={<Cart />} />
-          <Route path="/products/:id" element={<Product />} />
-          <Route path="/categories/:id" element={<Category />} />
-          <Route path="categories" element={<Categories />} />
-          <Route path="invoices" element={<Product />} />
-        </Routes>
-      </div>
+      <FilterContextProvider>
+        <div
+          style={{ paddingTop: 80 }}
+          className="flex align-center justify-center"
+        >
+          <Routes>
+            <Route path="/" exact element={<Home />} />
+            <Route path="/cart" exact element={<Cart />} />
+            <Route path="/products/:id" element={<Product />} />
+            <Route path="/categories/:id" element={<Category />} />
+            <Route path="categories" element={<Categories />} />
+            <Route path="invoices" element={<Product />} />
+          </Routes>
+        </div>
+      </FilterContextProvider>
     </BrowserRouter>
   );
 }

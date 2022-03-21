@@ -1,14 +1,14 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Card from "../components/card";
 import Menu from "../components/menu";
 import Spinner from "../components/spinner";
+import { FilterContext } from "../FilterContext";
 
 const Home = (props) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [sort, setSort] = useState();
-
+  const { filters } = useContext(FilterContext);
   useEffect(() => {
     setLoading(true);
     const getData = async () => {
@@ -18,7 +18,7 @@ const Home = (props) => {
     };
     getData();
     setLoading(false);
-  }, [data]);
+  }, []);
 
   if (loading) return <Spinner />;
   return (
@@ -26,10 +26,20 @@ const Home = (props) => {
       className=" flex flex-wrap justify-center "
       style={{ paddingLeft: "12rem" }}
     >
-      <Menu sort={setSort} />
-      {data.map((el) => (
-        <Card key={el.id} {...el} />
-      ))}
+      <Menu />
+      {data
+        .filter((el) =>
+          filters.categories.length > 0
+            ? filters.categories.includes(el.category)
+            : true
+        )
+        .filter(
+          (el) => el.price >= filters.price.min && el.price <= filters.price.max
+        )
+        .map((el) => {
+          console.log(el);
+          return <Card key={el.id} {...el} />;
+        })}
     </div>
   );
 };
